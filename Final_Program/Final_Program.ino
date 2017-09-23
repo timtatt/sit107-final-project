@@ -99,6 +99,13 @@ void loop() {
     }
   }
 
+  if (foodLevel == false) {
+    Serial.println("WARNING: Food repository needs to be topped up");
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+
   dataFile.print(now.unixtime());
   dataFile.print(",");
   dataFile.print(now.year(), DEC);
@@ -116,15 +123,8 @@ void loop() {
   dataFile.print(foodLevel);
   dataFile.print(",");
   dataFile.println(getWeight());
-  
-  if (foodLevel == false) {
-    Serial.println("WARNING: Food repository needs to be topped up");
-    digitalWrite(ledPin, HIGH);
-  } else {
-    digitalWrite(ledPin, LOW);
-  }
 
-  
+  delay(1000);
 }
 
 float roundUp(float number, int places) {
