@@ -83,6 +83,7 @@ void setup() {
 void loop() {
   DateTime now = rtc.now();
   bool foodLevel = foodAboveLevel();
+  bool foodDispensedInIteration = false;
   
   if (now.hour() == 0 && now.minute() == 0) {
     Serial.println("MESSAGE: Resetting the food dispensed flags");
@@ -96,6 +97,7 @@ void loop() {
       Serial.println("MESSAGE: Dispensing Food");
       dispenseFood();
       foodDispensed[i] = true;
+      foodDispensedInIteration = true;
     }
   }
 
@@ -124,7 +126,18 @@ void loop() {
   dataFile.print(",");
   dataFile.println(getWeight());
 
-  delay(1000);
+  if (foodDispensedInIteration) {
+  	chime();
+  	delay(700);
+  } else {
+		delay(1000);
+	}
+}
+
+void chime() {
+	digitalWrite(buzzerPin, HIGH);
+	delay(300);
+	digitalWrite(buzzerPin, LOW);
 }
 
 float roundUp(float number, int places) {
